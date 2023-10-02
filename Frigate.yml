@@ -1,0 +1,27 @@
+services:
+  frigate3:
+    container_name: frigate
+    image: ghcr.io/blakeblackshear/frigate:0.13.0-beta2
+    restart: always
+    privileged: true
+    shm_size: "512mb"
+    volumes:
+      - /etc/localtime:/etc/localtime
+      #- /root/frigate/config.yml:/config/config.yml
+      - frigate_config:/config
+      - /mnt/media:/media
+      - frigate_custom_model:/custom_model
+    devices:
+        - /dev/apex_0:/dev/apex_0
+    ports:
+      - 8554:8554
+      - 5000:5000
+      - 1935:1935
+    environment:
+      FRIGATE_RTSP_PASSWORD: "password"
+      LIBVA_DRIVER_NAME: "iHD"
+    #stdin_open: true # docker run -i
+    #tty: true        # docker run -t
+volumes:
+  frigate_config:
+  frigate_custom_model:
