@@ -1,0 +1,43 @@
+services:
+  emqx:
+      container_name: emxq
+      image: emqx/emqx:latest
+      restart: always
+      environment:
+        EMQX_NAME: "emqx"
+        EMQX_HOST: "192.168.0.112"
+      ports:
+      - 18083:18083
+      - 1883:1883
+      - 8083:8083
+      - 8883:8883     
+      
+      volumes:
+      - vol-emqx-data:/opt/emqx/data
+      - vol-emqx-etc:/opt/emqx/etc
+      - vol-emqx-log:/opt/emqx/log
+  zigbee2mqtt:
+    container_name: zigbee2mqtt
+    image: koenkk/zigbee2mqtt
+    restart: unless-stopped
+    volumes:
+      - vol-zigbee-data:/app/data
+      - /run/udev:/run/udev:ro
+    ports:
+      - 8080:8080
+    environment:
+      - TZ=Europe/London
+    devices:
+      # Make sure this matched your adapter location
+      - /dev/ttyUSB0   
+volumes:
+  vol-emqx-data:
+    name: emqx-data
+  vol-emqx-etc:
+    name: emqx-etc
+  vol-emqx-log:
+    name: emqx-log
+  vol-zigbee-data:
+    name: zigbee-data
+
+      
