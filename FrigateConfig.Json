@@ -1,0 +1,135 @@
+#yaml-language-server: $schema=http://192.168.0.102:5000/api/config/schema.json
+
+mqtt:
+  host: 192.168.0.111
+  user: frigate
+  password: 
+
+go2rtc:
+ # rtsp:
+ #   username: "admin"
+ #   password: "pass"
+  streams:
+    FrontOfGarage:
+      - rtsp://frigate:Frigate123!@192.168.5.6/live
+    FrontOfGarageSub:
+      - rtsp://frigate:Frigate123!@192.168.5.6/cam/realmonitor?channel=1&subtype=1
+    FrontDoor:
+      - rtsp://frigate:Frigate123!@192.168.5.7/live
+    FrontDoorSub:
+      - rtsp://frigate:Frigate123!@192.168.5.7/cam/realmonitor?channel=1&subtype=1
+    Patio:
+      - rtsp://frigate:123456@192.168.5.3:554/h264Preview_01_main
+    PatioSub:
+      - rtsp://frigate:123456@192.168.5.3:554/h264Preview_01_sub
+    Garage_Inside:
+      - rtsp://frigate:123456@192.168.5.5:554/h265Preview_01_main
+    Garage_InsideSub:
+      - rtsp://frigate:123456@192.168.5.5:554/h264Preview_01_sub
+    OutBack:
+      - rtsp://frigate:123456@192.168.5.2:554/h264Preview_01_main
+    OutBackSub:
+      - rtsp://frigate:123456@192.168.5.2:554/h264Preview_01_sub
+    CatCam:
+      - rtsp://admin:025193@192.168.5.8:554/live/profile.0
+    CatCamSub:
+      - rtsp://admin:025193@192.168.5.8:554/live/profile.1
+    DiningRoom:
+      - rtsp://admin:303552@192.168.5.4:554/live/profile.0
+    DiningRoomSub:
+      - rtsp://admin:303552@192.168.5.4:554/live/profile.1
+
+birdseye:
+  enabled: True
+  mode: objects
+
+cameras:
+  FrontOfGarage:
+    ffmpeg:
+      
+      inputs:
+        - path: rtsp://127.0.0.1:8554/FrontOfGarage
+          roles:
+            - record
+        - path: rtsp://127.0.0.1:8554/FrontOfGarageSub
+          roles:
+            - detect
+
+  FrontDoor:
+    ffmpeg:
+       
+      inputs:
+        - path: rtsp://127.0.0.1:8554/FrontDoor
+          roles:
+            - record
+        - path: rtsp://127.0.0.1:8554/FrontDoorSub
+          roles:            
+            - detect
+  Patio:
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/Patio
+          roles:
+            - record
+        - path: rtsp://127.0.0.1:8554/PatioSub
+          roles:        
+            - detect
+
+  Garage_Inside:
+    ffmpeg:
+      
+      inputs:
+        - path: rtsp://127.0.0.1:8554/Garage_Inside
+          roles:
+            - record
+        - path: rtsp://127.0.0.1:8554/Garage_InsideSub
+          roles:            
+            - detect
+
+  OutBack:
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/OutBack
+          roles:
+            - record
+        - path: rtsp://127.0.0.1:8554/OutBackSub
+          roles:            
+            - detect
+  
+  CatCam:
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/CatCam
+          roles:
+            - record
+        - path: rtsp://127.0.0.1:8554/CatCamSub
+          roles:
+            - detect
+
+  DiningRoom:
+    ffmpeg:
+      
+      inputs:
+        - path: rtsp://127.0.0.1:8554/DiningRoom
+          roles:
+            - record
+        - path: rtsp://127.0.0.1:8554/DiningRoomSub
+          roles:
+            - detect
+
+
+record:
+  enabled: True 
+  retain:
+    days: 20
+
+detectors:
+  detector_name:
+    type: edgetpu
+
+
+
+objects:
+  # Optional: list of objects to track from labelmap.txt (default: shown below)
+  track:
+    - person
